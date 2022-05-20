@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SwaggerPetShop.Model;
 //using SwaggerPetShop.Model;
 using SwaggerPetShop.Services.Interface;
 using System;
@@ -14,7 +15,7 @@ namespace SwaggerPetShop.Services.Implementation
     {
         private const string URL = "https://petstore.swagger.io/v2/pet/findByStatus?status=";
         private const string API_KEY = "special-key";
-        public async   Task<List<Pet>> FindByStatus(string petStatus)
+        public async Task<List<Pet>> FindByStatus(string petStatus)
         {
            // List<Pet> response;
             petStatus = "sold";
@@ -26,32 +27,6 @@ namespace SwaggerPetShop.Services.Implementation
 
                 return JsonConvert.DeserializeObject<List<Pet>>(jsonString);
             }
-
-          //  return null;
         }
     }
-
-    public class Category
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-    }
-
-    [JsonObject(Title ="Root") ] 
-    public class Pet
-    {
-        public long id { get; set; }
-        public Category category { get; set; }
-        public List<string> photoUrls { get; set; }
-        public List<Tag> tags { get; set; }
-        public string status { get; set; }
-        public string name { get; set; }
-    }
-
-    public class Tag
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-    }
-
 }

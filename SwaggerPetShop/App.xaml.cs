@@ -19,6 +19,10 @@ namespace SwaggerPetShop
         public App()
         {
             DependencyInjector.Register<IFindByStatusService, FindByStatusService>();
+            DependencyInjector.Register<IAddPetService, AddPetService>();
+            DependencyInjector.Register<IDeletePetService, DeletePetService>();
+            DependencyInjector.Register<IGetByIdService, GetByIdService>();
+            DependencyInjector.Register<IUpdatePetService, UpdatePetService>();
             MainWindow = DependencyInjector.Retrieve<MainWin>();
             MainWindow.Show();
         }

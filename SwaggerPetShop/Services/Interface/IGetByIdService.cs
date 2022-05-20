@@ -1,5 +1,4 @@
 ﻿using SwaggerPetShop.Model;
-using SwaggerPetShop.Services.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SwaggerPetShop.Services.Interface
 {
-    public interface IAddPetService
+    public interface IGetByIdService
     {
-        public Task<bool> AddPet(Pet item);
+        public Task<Pet> GetById(string id);
     }
 }
