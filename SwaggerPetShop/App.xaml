@@ -3,6 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SwaggerPetShop">
     <Application.Resources>
-         
+        <Style TargetType="TextBlock" >
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="Button" >
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="50"/>
+        </Style>
+        <Style TargetType="TextBox" >
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="detailsTexyBlock">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="detailsTextox">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="ComboBox" x:Key="detailsCombo">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
     </Application.Resources>
 </Application>

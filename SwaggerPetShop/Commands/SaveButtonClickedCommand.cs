@@ -10,26 +10,25 @@ using System.Windows.Input;
 
 namespace SwaggerPetShop.Commands
 {
-    public class AddPetCommand : ICommand
+    public class SaveButtonClickedCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
 
         public MainViewModel _vm;
 
-        public AddPetCommand(MainViewModel vm)
+        public SaveButtonClickedCommand(MainViewModel vm)
         {
             _vm = vm;
         }
 
         public bool CanExecute(object? parameter)
         {
-            //TODO validation
             return true;
         }
 
         public void Execute(object? parameter)
         {
-            _vm.AddPet(parameter as Pet); 
+            _vm.SaveButtonClicked(parameter as Pet); 
         }
     }
 }

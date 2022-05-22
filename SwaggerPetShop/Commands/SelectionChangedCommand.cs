@@ -8,24 +8,24 @@ using System.Windows.Input;
 
 namespace SwaggerPetShop.Commands
 {
-    public class GetByIdCommand : ICommand
+    public class SelectionChangedCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        public MainViewModel _mainViewModel;
+        private MainViewModel _vm;
 
-        public GetByIdCommand(MainViewModel vm)
+        public SelectionChangedCommand(MainViewModel vm)
         {
-            _mainViewModel = vm;
+            _vm = vm;
         }
 
         public bool CanExecute(object? parameter)
         {
-           return true;
+            return true;
         }
 
         public void Execute(object? parameter)
         {
-            _mainViewModel.GetById();
+            _vm.SelectionChanged();
         }
     }
 }

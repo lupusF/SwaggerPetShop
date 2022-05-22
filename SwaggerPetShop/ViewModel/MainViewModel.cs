@@ -28,6 +28,7 @@ namespace SwaggerPetShop.ViewModel
         public ObservableCollection<Pet> PetList { get; set; }
 
         public Pet PetToDisplay { get; set; }
+        public string PetId { get; set; }
 
         private Pet _selectedPet;
         public Pet SelectedPet
@@ -50,10 +51,8 @@ namespace SwaggerPetShop.ViewModel
                 OnPropertyChanged("SelectedPetStatus");
             }
         }
-        public string PetId { get; set; }
 
         private bool _isPopUpOpen;
-
         public bool IsPopUpOpen
         {
             get { return _isPopUpOpen; }
@@ -65,7 +64,6 @@ namespace SwaggerPetShop.ViewModel
         }
 
         private Visibility _petDetailsVisibility;
-
         public Visibility PetDetailsVisibility
         {
             get { return _petDetailsVisibility; }
@@ -76,20 +74,43 @@ namespace SwaggerPetShop.ViewModel
             }
         }
 
+        private bool _searchById;
+        public bool SearchById
+        {
+            get { return _searchById; }
+            set
+            { 
+                _searchById = value;
+                OnPropertyChanged("SeaarchById");
+            }
+        }
+
+        private bool _searchByStatus;
+
+        public bool SearchByStatus
+        {
+            get { return _searchByStatus; }
+            set
+            { 
+                _searchByStatus = value;
+                OnPropertyChanged("SearchByStatus");
+            }
+        }
 
         #endregion
 
         #region Commands
-        public FindByStatusCommand FindByStatusCommad { get; set; }
-        public AddPetCommand AddPetCommand { get; set; }
+        public SaveButtonClickedCommand SaveButtonClickedCommand { get; set; }
         public ViewUpdateClickedCommand ViewUpdateClickedCommand { get; set; }
-        public GetByIdCommand GetByIdCommand { get; set; }
         public DeletePetCommand DeletePetCommand { get; set; }
-        public UpdatePetCommand UpdatePetCommand { get; set; }
-        public CancelClickedCommand CancelCommand { get; set; }
+        public CancelClickedCommand CancelClickedCommand { get; set; }
         public AddNewItemClickedCommand AddNewItemClickedCommand { get; set; }
+        public SearchClickedCommand SearchClickedCommand { get; set; }
+        public RadioButtonLostFocusCommand RadioButtonLostFocusCommand { get; set; }
+        public SelectionChangedCommand SelectionChangedCommand { get; set; }
         #endregion
 
+        #region ctor
         public MainViewModel(IFindByStatusService findByStatusService
                             ,IAddPetService addPetService
                             ,IDeletePetService deletePetService
@@ -102,21 +123,20 @@ namespace SwaggerPetShop.ViewModel
             _getByIdService = getByIdService;
             _updatePetService = updatePetService;
 
-
-            FindByStatusCommad = new FindByStatusCommand(this);
-            AddPetCommand = new AddPetCommand(this);
+            RadioButtonLostFocusCommand = new RadioButtonLostFocusCommand(this);
+            SaveButtonClickedCommand = new SaveButtonClickedCommand(this);
             ViewUpdateClickedCommand = new ViewUpdateClickedCommand(this);
-            GetByIdCommand = new GetByIdCommand(this);
-            UpdatePetCommand = new UpdatePetCommand(this);
             DeletePetCommand = new DeletePetCommand(this);
-            CancelCommand = new CancelClickedCommand(this);
+            CancelClickedCommand = new CancelClickedCommand(this);
             AddNewItemClickedCommand = new AddNewItemClickedCommand(this);
+            SearchClickedCommand = new SearchClickedCommand(this);
+            SelectionChangedCommand = new SelectionChangedCommand(this);
 
             PetList = new ObservableCollection<Pet>();
-            SelectedPetStatus = PetStatus.sold;
             IsPopUpOpen = false;
             PetDetailsVisibility = Visibility.Hidden;
             }
+#endregion
 
         #region ApiCalls
         public async void FindPetByStatus()
@@ -146,7 +166,7 @@ namespace SwaggerPetShop.ViewModel
             }
         }
 
-        public async void AddPet1(Pet pet)
+        public async void AddPet(Pet pet)
         {
             var res = await _addPetService.AddPet(pet);
 
@@ -158,18 +178,6 @@ namespace SwaggerPetShop.ViewModel
             else
             {
                 IsPopUpOpen = true;
-            }
-        }
-
-        public void AddPet(Pet pet)
-        {
-            if(_isNew)
-            {
-                AddPet1(pet);
-            }
-            else
-            {
-                UpdatePet(pet);
             }
         }
 
@@ -202,11 +210,26 @@ namespace SwaggerPetShop.ViewModel
                 IsPopUpOpen = true;
             }
         }
-
         #endregion
+
+        #region Methods
+        public void SaveButtonClicked(Pet pet)
+        {
+            if (_isNew)
+            {
+                AddPet(pet);
+            }
+            else
+            {
+                UpdatePet(pet);
+            }
+        }
         public void CancelClicked()
         {
             PetDetailsVisibility = Visibility.Hidden;
+            SelectedPet = null;
+            PetToDisplay = null;
+            PetList.Clear();
         }
 
         public void AddNewItemClicked()
@@ -214,15 +237,47 @@ namespace SwaggerPetShop.ViewModel
             _isNew = true;
             PetDetailsVisibility = Visibility.Visible;
             PetToDisplay = SetDefaultValues();
+            PetId = null;
             OnPropertyChanged("PetToDisplay");
+            OnPropertyChanged("PetId");
         }
 
-        public async void ViewUpdateClicked()
+        public void SearchClicked()
+        {
+            if(SearchById)
+            {
+                GetById();
+            }
+            else
+            {
+                FindPetByStatus();
+            }
+        }
+
+        public void ViewUpdateClicked()
         {
             PetDetailsVisibility = Visibility.Visible;
             PetToDisplay = SelectedPet;
             OnPropertyChanged("PetToDisplay");
         }
+
+        public void RadioButtonLostFocus()
+        {
+            if(!SearchById)
+            {
+                PetId = null;
+                OnPropertyChanged("PetId");
+            }
+        }
+
+        public void SelectionChanged()
+        {
+            if(PetList.Count > 0)
+            {
+                PetList.Clear();
+            }
+        }
+        #endregion
 
         #region Helpers
         private Pet SetDefaultValues()

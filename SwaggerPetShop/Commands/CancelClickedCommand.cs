@@ -11,7 +11,7 @@ namespace SwaggerPetShop.Commands
     public class CancelClickedCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        private MainViewModel _vm;
+        public MainViewModel _vm;
 
         public CancelClickedCommand(MainViewModel vm)
         {

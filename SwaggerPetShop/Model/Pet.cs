@@ -10,7 +10,7 @@ namespace SwaggerPetShop.Model
     [JsonObject(Title = "Root")]
     public class Pet
     {
-        public long id { get; set; }
+        public double id { get; set; }
         public Category category { get; set; }
         public List<string> photoUrls { get; set; }
         public List<Tag> tags { get; set; }

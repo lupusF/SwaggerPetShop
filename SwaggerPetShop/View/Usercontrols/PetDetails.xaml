@@ -14,8 +14,14 @@
                 <x:Type TypeName="enums:PetStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="15"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="15"/>
+        </Style>
     </UserControl.Resources>
-    <GroupBox>
+    <GroupBox Header="Pet details" Margin="5" VerticalAlignment="Center">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>

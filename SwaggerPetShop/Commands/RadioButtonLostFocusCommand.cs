@@ -8,12 +8,13 @@ using System.Windows.Input;
 
 namespace SwaggerPetShop.Commands
 {
-    public class FindByStatusCommand : ICommand
+    public class RadioButtonLostFocusCommand : ICommand
     {
-        public MainViewModel _vm;
         public event EventHandler? CanExecuteChanged;
 
-        public FindByStatusCommand(MainViewModel vm)
+        public MainViewModel _vm;
+
+        public RadioButtonLostFocusCommand(MainViewModel vm)
         {
             _vm = vm;
         }
@@ -25,7 +26,7 @@ namespace SwaggerPetShop.Commands
 
         public void Execute(object? parameter)
         {
-            _vm.FindPetByStatus();
+            _vm.RadioButtonLostFocus();
         }
     }
 }
