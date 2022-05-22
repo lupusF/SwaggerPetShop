@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SwaggerPetShop.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace SwaggerPetShop.Services.Interface
 {
     public interface IUpdatePetService
     {
-        public void UpdatePet();
+        public  Task<bool> UpdatePet(Pet item);
     }
 }

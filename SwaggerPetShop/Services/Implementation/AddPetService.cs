@@ -12,17 +12,18 @@ namespace SwaggerPetShop.Services.Implementation
 {
     public class AddPetService : IAddPetService
     {
-        private const string URL = "petstore.swagger.io/v2/pet";
+        private const string URL = "https://petstore.swagger.io/v2/pet";
         private const string API_KEY = "special-key";
         public async Task<bool> AddPet(Pet item)
         {
+            var x = item.status;
             var jsonbody = JsonConvert.SerializeObject(item);
             var content = new StringContent(jsonbody, Encoding.UTF8, "application/json");
 
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("api_key", API_KEY);
-                var result = await client.PostAsync(URL, content);
+                var result = client.PostAsync(URL, content).Result;
                 if (result.IsSuccessStatusCode)
                 {
                     return true;
@@ -32,6 +33,35 @@ namespace SwaggerPetShop.Services.Implementation
                     return false;
                 }
             }
+        }
+
+        Pet createDummyPet()
+        {
+            return new Pet()
+            {
+                category = new Category()
+                {
+                    id = 1,
+                    name = "name"
+                },
+                id = 123,
+                name = "adfs",
+                photoUrls = new List<string>()
+                     {
+                          "1", "2"
+                     },
+                status = "available",
+                tags = new List<Tag>()
+                       {
+                            new Tag()
+                            {
+                                 name = "name",
+                                  id  = 2
+                            }
+                       }
+
+
+            };
         }
 
        

@@ -1,5 +1,4 @@
-﻿using SwaggerPetShop.Model;
-using SwaggerPetShop.ViewModel;
+﻿using SwaggerPetShop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +8,14 @@ using System.Windows.Input;
 
 namespace SwaggerPetShop.Commands
 {
-    public class UpdatePetCommand : ICommand
+    public class CancelClickedCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
+        private MainViewModel _vm;
 
-        public MainViewModel _mainViewModel;
-
-        public UpdatePetCommand(MainViewModel vm)
+        public CancelClickedCommand(MainViewModel vm)
         {
-            _mainViewModel = vm;
+            _vm = vm;
         }
 
         public bool CanExecute(object? parameter)
@@ -27,7 +25,7 @@ namespace SwaggerPetShop.Commands
 
         public void Execute(object? parameter)
         {
-            _mainViewModel.UpdatePet(parameter as Pet);
+            _vm.CancelClicked();
         }
     }
 }

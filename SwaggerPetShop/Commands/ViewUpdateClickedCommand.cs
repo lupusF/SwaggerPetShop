@@ -8,11 +8,11 @@ using System.Windows.Input;
 
 namespace SwaggerPetShop.Commands
 {
-    public class SearchCommand : ICommand
+    public class ViewUpdateClickedCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
         public MainViewModel _mainViewModel;
-        public SearchCommand(MainViewModel vm)
+        public ViewUpdateClickedCommand(MainViewModel vm)
         {
             _mainViewModel = vm;
         }
@@ -24,7 +24,7 @@ namespace SwaggerPetShop.Commands
 
         public void Execute(object? parameter)
         {
-            _mainViewModel.SearchClicked();
+            _mainViewModel.ViewUpdateClicked();
         }
     }
 }

@@ -19,18 +19,26 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
     <DockPanel>
-        <Popup Name="popCaesar" StaysOpen="False" IsOpen="{Binding IsPopUpOpen}"  PlacementTarget="{Binding ElementName=petIdTextBox}">
-            <TextBlock Text="Pet not found"
+        <Popup Name="PetNotFoundpopup" StaysOpen="False" IsOpen="{Binding IsPopUpOpen}"  PlacementTarget="{Binding ElementName=petIdTextBox}">
+            <TextBlock Text="Sg went wrong"
                     Background="Red"
                     Padding="5" Width="150"
                     TextWrapping="Wrap"/>
         </Popup>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Actions">
+                <MenuItem Header="Add new pet"
+                          Command="{Binding AddNewItemClickedCommand}"/>
+            </MenuItem>
+        </Menu>
         <Grid DockPanel.Dock="Left">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -39,8 +47,8 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Search by" Grid.Column="0"/>
                 <RadioButton x:Name="IdRadioButton"  GroupName="SearchBy" Content="id" Grid.Column="1" Grid.Row="0"/>
@@ -56,36 +64,47 @@
                 <Button Content="Search" Command="{Binding GetByIdCommand, Mode=TwoWay}" Grid.Row="0" Grid.Column="3" Visibility="{Binding Path=IsChecked, ElementName=IdRadioButton, Converter={StaticResource BoolToVis}}"/>
                 <Button Content="Search" Command="{Binding FindByStatusCommad, Mode=TwoWay}" Grid.Row="1" Grid.Column="3" Visibility="{Binding Path=IsChecked, ElementName=StatusRadioButton, Converter={StaticResource BoolToVis}}"/>
             </Grid>
-            <ListView Grid.Row="2"  
+            <Grid Grid.Row="1" >
+                <ListView   
+                      DockPanel.Dock ="Left"
                       ItemsSource="{Binding PetList}" 
                       Margin="5" 
                       Background="AliceBlue" 
                       Width="140" 
                       SelectedValue="{Binding SelectedPet}">
-
-                <ListView.Resources>
-                    <ContextMenu x:Key="ItemContextMenu">
-                        <MenuItem Header="More Info" Command="{Binding Path=DataContext.UpdatePetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" Background="WhiteSmoke" />
-                    </ContextMenu>
-                </ListView.Resources>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}" >
-                        <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <uc:DisplayPetList Pet="{Binding}">
-                            <!--<uc:DisplayPetList.ContextMenu>
-                                --><!--<ContextMenu>
-                                    <MenuItem Header="Edit/View Details" Command="{Binding UpdatePetCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
-                                    <MenuItem Header="Delete" Command="{Binding DeletePetCommand}"/>
-                                </ContextMenu>--><!--
-                            </uc:DisplayPetList.ContextMenu>-->
-                        </uc:DisplayPetList>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    <ListView.Resources>
+                        <ContextMenu x:Key="ItemContextMenu">
+                            <MenuItem Header="View-Update" Command="{Binding Path=DataContext.ViewUpdateClickedCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" Background="WhiteSmoke" />
+                            <MenuItem Header="Delete" Command="{Binding Path=DataContext.DeletePetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" Background="WhiteSmoke" />
+                        </ContextMenu>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}" >
+                            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <uc:DisplayPetList Pet="{Binding}">
+                            </uc:DisplayPetList>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+        <Grid  DockPanel.Dock="Right" Visibility="{Binding PetDetailsVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <uc:PetDetails DataContext="{Binding PetToDisplay}"  Pet="{Binding PetToDisplay, Mode=TwoWay}" Grid.ColumnSpan="3"/>
+            <Button Command="{Binding AddPetCommand}" CommandParameter="{Binding PetToDisplay}" Content="Save" Grid.Row="1" Grid.Column="0"/>
+            <Button Command="{Binding CancelClickedCommand}" Content="Camcel" Grid.Row="1" Grid.Column="1"/>
         </Grid>
     </DockPanel>
 </Window>

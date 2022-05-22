@@ -8,6 +8,6 @@ namespace SwaggerPetShop.Services.Interface
 {
     public interface IDeletePetService
     {
-        public void DeletePet(int id);
+        public Task<bool> DeletePet(long id);
     }
 }

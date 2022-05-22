@@ -17,8 +17,6 @@ namespace SwaggerPetShop.Services.Implementation
         private const string API_KEY = "special-key";
         public async Task<List<Pet>> FindByStatus(string petStatus)
         {
-           // List<Pet> response;
-            petStatus = "sold";
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("api_key", API_KEY);
