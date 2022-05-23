@@ -3,6 +3,7 @@ using SwaggerPetShop.Model;
 using SwaggerPetShop.Services.Interface;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -12,18 +13,18 @@ namespace SwaggerPetShop.Services.Implementation
 {
     public class AddPetService : IAddPetService
     {
-        private const string URL = "https://petstore.swagger.io/v2/pet";
+     //   private const string URL = "https://petstore.swagger.io/v2/pet";
         private const string API_KEY = "special-key";
         public async Task<bool> AddPet(Pet item)
         {
-            var x = item.status;
+            var url = ConfigurationManager.AppSettings["AddPetUrl"];
             var jsonbody = JsonConvert.SerializeObject(item);
             var content = new StringContent(jsonbody, Encoding.UTF8, "application/json");
 
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("api_key", API_KEY);
-                var result = client.PostAsync(URL, content).Result;
+                var result = client.PostAsync(url, content).Result;
                 if (result.IsSuccessStatusCode)
                 {
                     return true;
