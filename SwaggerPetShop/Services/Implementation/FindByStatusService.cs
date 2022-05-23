@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SwaggerPetShop.DTOs;
 using SwaggerPetShop.Model;
 //using SwaggerPetShop.Model;
 using SwaggerPetShop.Services.Interface;
@@ -12,20 +13,34 @@ using System.Threading.Tasks;
 
 namespace SwaggerPetShop.Services.Implementation
 {
-    public class FindByStatusService : IFindByStatusService
+    public class FindByStatusService : ServiceBase, IFindByStatusService
     {
-        //private const string URL = "https://petstore.swagger.io/v2/pet/findByStatus?status=";
-        private const string API_KEY = "special-key";
-        public async Task<List<Pet>> FindByStatus(string petStatus)
+        public async Task<ReturnPetListWithResponse> FindByStatus(string petStatus)
         {
             using (HttpClient client = new HttpClient())
             {
                 var url = ConfigurationManager.AppSettings["FindByStatusUrl"];
-                client.DefaultRequestHeaders.Add("api_key", API_KEY);
+                client.DefaultRequestHeaders.Add("api_key", apiKey);
                 var result =  await client.GetAsync($"{url}{petStatus}");
                 string jsonString =  await result.Content.ReadAsStringAsync();
 
-                return JsonConvert.DeserializeObject<List<Pet>>(jsonString);
+                var response = JsonConvert.DeserializeObject<List<Pet>>(jsonString);
+
+                if(result.IsSuccessStatusCode)
+                {
+                    return new ReturnPetListWithResponse
+                    {
+                        PetList = response,
+                        Message = result.ReasonPhrase
+                    };
+                }
+                else
+                {
+                    return new ReturnPetListWithResponse
+                    {
+                        Message = result.ReasonPhrase
+                    };
+                }
             }
         }
     }

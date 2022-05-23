@@ -14,7 +14,7 @@ namespace SwaggerPetShop.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-       
+
         #region Fields
         private IFindByStatusService _findByStatusService;
         private IAddPetService _addPetService;
@@ -27,14 +27,14 @@ namespace SwaggerPetShop.ViewModel
         #region properties
         public ObservableCollection<Pet> PetList { get; set; }
 
-        public Pet PetToDisplay { get; set; }
+        public Pet? PetToDisplay { get; set; }
         public string PetId { get; set; }
 
         private Pet _selectedPet;
-        public Pet SelectedPet
+        public Pet? SelectedPet
         {
             get { return _selectedPet; }
-            set 
+            set
             {
                 _selectedPet = value;
                 OnPropertyChanged("SelectedPet");
@@ -45,8 +45,8 @@ namespace SwaggerPetShop.ViewModel
         public PetStatus SelectedPetStatus
         {
             get { return _selectedPetStatus; }
-            set 
-            { 
+            set
+            {
                 _selectedPetStatus = value;
                 OnPropertyChanged("SelectedPetStatus");
             }
@@ -56,8 +56,8 @@ namespace SwaggerPetShop.ViewModel
         public bool IsPopUpOpen
         {
             get { return _isPopUpOpen; }
-            set 
-            { 
+            set
+            {
                 _isPopUpOpen = value;
                 OnPropertyChanged("IsPopUpOpen");
             }
@@ -67,8 +67,8 @@ namespace SwaggerPetShop.ViewModel
         public Visibility PetDetailsVisibility
         {
             get { return _petDetailsVisibility; }
-            set 
-            { 
+            set
+            {
                 _petDetailsVisibility = value;
                 OnPropertyChanged("PetDetailsVisibility");
             }
@@ -79,7 +79,7 @@ namespace SwaggerPetShop.ViewModel
         {
             get { return _searchById; }
             set
-            { 
+            {
                 _searchById = value;
                 OnPropertyChanged("SeaarchById");
             }
@@ -91,11 +91,24 @@ namespace SwaggerPetShop.ViewModel
         {
             get { return _searchByStatus; }
             set
-            { 
+            {
                 _searchByStatus = value;
                 OnPropertyChanged("SearchByStatus");
             }
         }
+
+        private string _popupMessage;
+
+        public string PopupMessage
+        {
+            get { return _popupMessage; }
+            set
+            {
+                _popupMessage = value;
+                OnPropertyChanged("PopupMessage");
+            }
+        }
+
 
         #endregion
 
@@ -112,10 +125,10 @@ namespace SwaggerPetShop.ViewModel
 
         #region ctor
         public MainViewModel(IFindByStatusService findByStatusService
-                            ,IAddPetService addPetService
-                            ,IDeletePetService deletePetService
-                            ,IGetByIdService getByIdService
-                            ,IUpdatePetService updatePetService)
+                            , IAddPetService addPetService
+                            , IDeletePetService deletePetService
+                            , IGetByIdService getByIdService
+                            , IUpdatePetService updatePetService)
         {
             _findByStatusService = findByStatusService;
             _addPetService = addPetService;
@@ -135,80 +148,99 @@ namespace SwaggerPetShop.ViewModel
             PetList = new ObservableCollection<Pet>();
             IsPopUpOpen = false;
             PetDetailsVisibility = Visibility.Hidden;
-            }
-#endregion
+        }
+        #endregion
 
         #region ApiCalls
         public async void FindPetByStatus()
         {
             var result = await _findByStatusService.FindByStatus(SelectedPetStatus.ToString());
-           
-            PetList?.Clear();
 
-            foreach(var pet in result)
+            if (result.Message.Equals("OK"))
             {
-                PetList.Add(pet);
+                PetList?.Clear();
+
+                foreach (var pet in result.PetList)
+                {
+                    PetList.Add(pet);
+                }
             }
+            else
+            {
+                SetErrorMessage(result.Message); 
+                IsPopUpOpen = true;
+            }
+
+
         }
         public async void GetById()
         {
             var result = await _getByIdService.GetById(PetId);
 
-            if(result != null)
+            if (result.Message.Equals("OK"))
             {
                 PetList?.Clear();
-          
-                PetList.Add(result);
+
+                PetList.Add(result.Pet);
             }
             else
             {
+                SetErrorMessage(result.Message);
                 IsPopUpOpen = true;
             }
         }
 
         public async void AddPet(Pet pet)
         {
-            var res = await _addPetService.AddPet(pet);
+            PetList.Clear();
+            var result = await _addPetService.AddPet(pet);
 
-            if (res)
+            if (result.Message.Equals("OK"))
             {
                 PetToDisplay = null;
                 PetDetailsVisibility = Visibility.Collapsed;
+                PopupMessage = "Pet added";
             }
             else
             {
-                IsPopUpOpen = true;
+                SetErrorMessage(result.Message);
             }
+            IsPopUpOpen = true;
         }
 
         public async void DeletePet()
         {
             var result = await _deletePetService.DeletePet((long)SelectedPet.id);
 
-            if (result)
+            if (result.Message.Equals("OK"))
             {
                 PetDetailsVisibility = Visibility.Collapsed;
-                PetList.Clear();
+                PetList.Remove(SelectedPet);
+                PopupMessage = "Pet is deleted";
             }
             else
             {
-                IsPopUpOpen = true;
+                SetErrorMessage(result.Message);
             }
+            
+            IsPopUpOpen = true;
         }
 
         public async void UpdatePet(Pet pet)
         {
-           var result = await _updatePetService.UpdatePet(pet);
+            var result = await _updatePetService.UpdatePet(pet);
 
-            if (result)
+            if (result.Message.Equals("OK"))
             {
                 SelectedPet = null;
                 PetDetailsVisibility = Visibility.Collapsed;
+                PopupMessage = "Pet is updated";
             }
             else
             {
-                IsPopUpOpen = true;
+                SetErrorMessage(result.Message);
             }
+            IsPopUpOpen = true;
         }
         #endregion
 
@@ -223,13 +255,13 @@ namespace SwaggerPetShop.ViewModel
             {
                 UpdatePet(pet);
             }
+            _isNew = false;
         }
         public void CancelClicked()
         {
             PetDetailsVisibility = Visibility.Hidden;
             SelectedPet = null;
             PetToDisplay = null;
-            PetList.Clear();
         }
 
         public void AddNewItemClicked()
@@ -237,14 +269,15 @@ namespace SwaggerPetShop.ViewModel
             _isNew = true;
             PetDetailsVisibility = Visibility.Visible;
             PetToDisplay = SetDefaultValues();
-            PetId = null;
+            PetId = String.Empty;
             OnPropertyChanged("PetToDisplay");
             OnPropertyChanged("PetId");
         }
 
         public void SearchClicked()
         {
-            if(SearchById)
+            PetList.Clear();
+            if (SearchById)
             {
                 GetById();
             }
@@ -258,21 +291,22 @@ namespace SwaggerPetShop.ViewModel
         {
             PetDetailsVisibility = Visibility.Visible;
             PetToDisplay = SelectedPet;
+            PetList.Clear();
             OnPropertyChanged("PetToDisplay");
         }
 
         public void RadioButtonLostFocus()
         {
-            if(!SearchById)
+            if (!SearchById)
             {
-                PetId = null;
+                PetId = String.Empty;
                 OnPropertyChanged("PetId");
             }
         }
 
         public void SelectionChanged()
         {
-            if(PetList.Count > 0)
+            if (PetList.Count > 0)
             {
                 PetList.Clear();
             }
@@ -297,6 +331,10 @@ namespace SwaggerPetShop.ViewModel
                            }
                 },
             };
+        }
+        private void SetErrorMessage(string msg)
+        {
+            PopupMessage=$"{"Something went wrong! "}{"Message: "}{msg}";
         }
         #endregion
     }

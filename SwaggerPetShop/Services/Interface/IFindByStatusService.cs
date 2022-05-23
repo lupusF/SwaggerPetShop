@@ -1,4 +1,5 @@
 ﻿//using SwaggerPetShop.Model;
+using SwaggerPetShop.DTOs;
 using SwaggerPetShop.Model;
 using SwaggerPetShop.Services.Implementation;
 using System;
@@ -11,7 +12,7 @@ namespace SwaggerPetShop.Services.Interface
 {
     public interface IFindByStatusService
     {
-        public Task<List<Pet>> FindByStatus(string petStatus);
+        public Task<ReturnPetListWithResponse> FindByStatus(string petStatus);
 
     }
 }

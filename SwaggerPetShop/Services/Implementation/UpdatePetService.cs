@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SwaggerPetShop.DTOs;
 using SwaggerPetShop.Model;
 using SwaggerPetShop.Services.Interface;
 using System;
@@ -11,29 +12,23 @@ using System.Threading.Tasks;
 
 namespace SwaggerPetShop.Services.Implementation
 {
-    public class UpdatePetService : IUpdatePetService
+    public class UpdatePetService : ServiceBase, IUpdatePetService
     {
-     //   private const string URL = "https://petstore.swagger.io/v2/pet";
-        private const string API_KEY = "special-key";
-        public async Task<bool> UpdatePet(Pet item)
+        public async Task<ReturnPetWithResponse> UpdatePet(Pet item)
         {
             using (HttpClient client = new HttpClient())
             {
                 var url = ConfigurationManager.AppSettings["UpdatePetUrl"];
-                client.DefaultRequestHeaders.Add("api_key", "special-key");
+                client.DefaultRequestHeaders.Add("api_key", apiKey);
 
                 var jsonBody = JsonConvert.SerializeObject(item);
                 HttpContent cont = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = client.PutAsync(url, cont).Result;
-                if (response.IsSuccessStatusCode)
+                return new ReturnPetWithResponse
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                    Message = response.ReasonPhrase
+                };
             }
         }
 

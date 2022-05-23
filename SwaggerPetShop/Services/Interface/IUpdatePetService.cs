@@ -1,4 +1,5 @@
-﻿using SwaggerPetShop.Model;
+﻿using SwaggerPetShop.DTOs;
+using SwaggerPetShop.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace SwaggerPetShop.Services.Interface
 {
     public interface IUpdatePetService
     {
-        public  Task<bool> UpdatePet(Pet item);
+        public  Task<ReturnPetWithResponse> UpdatePet(Pet item);
     }
 }

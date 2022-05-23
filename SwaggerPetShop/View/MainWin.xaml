@@ -20,11 +20,14 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
     <DockPanel>
-        <Popup Name="PetNotFoundpopup" StaysOpen="False" IsOpen="{Binding IsPopUpOpen}"  PlacementTarget="{Binding ElementName=petIdTextBox}">
-            <TextBlock Text="{x:Static resx:StringResource.SgWentWrong}"
-                    Background="Red"
+        <Popup Name="PetNotFoundpopup" StaysOpen="False" IsOpen="{Binding IsPopUpOpen}"  Placement="Center">
+            <TextBlock Text="{Binding PopupMessage}"
+                    Background="AliceBlue"
+                    Height="60"
                     Padding="5" Width="150"
-                    TextWrapping="Wrap"/>
+                    TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
         </Popup>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{x:Static resx:StringResource.Actions}">

@@ -1,4 +1,5 @@
-﻿using SwaggerPetShop.Services.Interface;
+﻿using SwaggerPetShop.DTOs;
+using SwaggerPetShop.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,25 +10,20 @@ using System.Threading.Tasks;
 
 namespace SwaggerPetShop.Services.Implementation
 {
-    public class DeletePetService : IDeletePetService
+    public class DeletePetService :ServiceBase, IDeletePetService
     {
-      //  private const string URL = "https://petstore.swagger.io/v2/pet/";
-        private const string API_KEY = "special-key";
-        public async Task<bool> DeletePet(long id)
+        public async Task<ReturnPetWithResponse> DeletePet(long id)
         {
             using (HttpClient client = new HttpClient())
             {
                 var url = ConfigurationManager.AppSettings["DeletePetUrl"];
-                client.DefaultRequestHeaders.Add("api-key", "special-key");
+                client.DefaultRequestHeaders.Add("api-key", apiKey);
                 HttpResponseMessage response = client.DeleteAsync($"{url}{id}").Result;
-                if (response.IsSuccessStatusCode)
+
+                return new ReturnPetWithResponse
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                    Message = response.ReasonPhrase
+                };
             }
         }
     }

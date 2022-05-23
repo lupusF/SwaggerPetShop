@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SwaggerPetShop.DTOs;
 using SwaggerPetShop.Model;
 using SwaggerPetShop.Services.Interface;
 using System;
@@ -11,26 +12,33 @@ using System.Threading.Tasks;
 
 namespace SwaggerPetShop.Services.Implementation
 {
-    public class GetByIdService : IGetByIdService
+    public class GetByIdService : ServiceBase, IGetByIdService
     {
-       // private const string URL2 = "https://petstore.swagger.io/v2/pet/";
-
-        public async Task<Pet> GetById(string id)
+        public async Task<ReturnPetWithResponse> GetById(string id)
         {
             using (HttpClient client = new HttpClient())
             {
                 var url = ConfigurationManager.AppSettings["GetByIdUrl"];
-                client.DefaultRequestHeaders.Add("api-key", "special-key");
+                client.DefaultRequestHeaders.Add("api-key", apiKey);
                 HttpResponseMessage response = client.GetAsync($"{url}{id}").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     var responsetring = await response.Content.ReadAsStringAsync();
 
-                    return JsonConvert.DeserializeObject<Pet>(responsetring);
+                    var pet =  JsonConvert.DeserializeObject<Pet>(responsetring);
+
+                    return new ReturnPetWithResponse
+                    {
+                        Pet = pet,
+                        Message = response.ReasonPhrase,
+                    };
                 }
                 else
                 {
-                    return null;
+                    return new ReturnPetWithResponse
+                    {
+                        Message = response.ReasonPhrase,
+                    };
                 }
             }
         }

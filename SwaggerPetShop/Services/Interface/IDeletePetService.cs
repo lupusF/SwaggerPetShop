@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SwaggerPetShop.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace SwaggerPetShop.Services.Interface
 {
     public interface IDeletePetService
     {
-        public Task<bool> DeletePet(long id);
+        public Task<ReturnPetWithResponse> DeletePet(long id);
     }
 }
