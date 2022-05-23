@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:SwaggerPetShop.View.Usercontrols"
              xmlns:enums="clr-namespace:SwaggerPetShop.Model"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:resx="clr-namespace:SwaggerPetShop.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -34,17 +35,17 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Pet name" Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Text="{x:Static resx:StringResource.PetName}" Grid.Row="0" Grid.Column="0"/>
             <TextBox Text="{Binding name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
-            <TextBlock Text="Pet id" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="{x:Static resx:StringResource.PetId}" Grid.Row="1" Grid.Column="0"/>
             <TextBox Text="{Binding id, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
-            <TextBlock Text="PetCategory name" Grid.Row="2" Grid.Column="0"/>
+            <TextBlock Text="{x:Static resx:StringResource.PetCategoryName}" Grid.Row="2" Grid.Column="0"/>
             <TextBox Text="{Binding category.name, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
-            <TextBlock Text="category id" Grid.Row="0" Grid.Column="2"/>
+            <TextBlock Text="{x:Static resx:StringResource.PetCategoryId}" Grid.Row="0" Grid.Column="2"/>
             <TextBox Text="{Binding category.id, Mode=TwoWay}" Grid.Row="0" Grid.Column="3"/>
-            <TextBlock Text="tag name" Grid.Row="1" Grid.Column="2"/>
+            <TextBlock Text="{x:Static resx:StringResource.TagName}" Grid.Row="1" Grid.Column="2"/>
             <TextBox Text="{Binding tag.name, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
-            <TextBlock Text="status" Grid.Row="2" Grid.Column="2"/>
+            <TextBlock Text="{x:Static resx:StringResource.Status}" Grid.Row="2" Grid.Column="2"/>
             <TextBox Text="{Binding status, Mode=TwoWay}" Grid.Row="2" Grid.Column="3" />
             <!--<ComboBox 
                       Grid.Row="2" 

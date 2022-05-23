@@ -8,6 +8,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:uc="clr-namespace:SwaggerPetShop.View.Usercontrols"
+        xmlns:resx="clr-namespace:SwaggerPetShop.Resources"
         mc:Ignorable="d"
         Title="Pet Store" Height="550" Width="1200">
     <Window.Resources>
@@ -20,14 +21,14 @@
     </Window.Resources>
     <DockPanel>
         <Popup Name="PetNotFoundpopup" StaysOpen="False" IsOpen="{Binding IsPopUpOpen}"  PlacementTarget="{Binding ElementName=petIdTextBox}">
-            <TextBlock Text="Sg went wrong"
+            <TextBlock Text="{x:Static resx:StringResource.SgWentWrong}"
                     Background="Red"
                     Padding="5" Width="150"
                     TextWrapping="Wrap"/>
         </Popup>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Actions">
-                <MenuItem Header="Add new pet"
+            <MenuItem Header="{x:Static resx:StringResource.Actions}">
+                <MenuItem Header="{x:Static resx:StringResource.AddNewPet}"
                           Command="{Binding AddNewItemClickedCommand}"/>
             </MenuItem>
         </Menu>
@@ -50,7 +51,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Search by" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center"/>
+                <TextBlock Text="{x:Static resx:StringResource.SearchBy}" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center"/>
                 <RadioButton x:Name="IdRadioButton" IsChecked="{Binding SearchById, Mode=TwoWay}" GroupName="SearchBy" Grid.Column="1" Grid.Row="0"  VerticalAlignment="Center">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Unchecked">
@@ -73,7 +74,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ComboBox>
-                <Button Content="Search" Command="{Binding SearchClickedCommand, Mode=TwoWay}" Grid.RowSpan="2" VerticalAlignment="Center" Grid.Column="3"/>
+                <Button Content="{x:Static resx:StringResource.Search}" Command="{Binding SearchClickedCommand, Mode=TwoWay}" Grid.RowSpan="2" VerticalAlignment="Center" Grid.Column="3"/>
             </Grid>
             <Grid Grid.Row="1" >
                 <ListView   
@@ -85,8 +86,8 @@
                       SelectedValue="{Binding SelectedPet}">
                     <ListView.Resources>
                         <ContextMenu x:Key="ItemContextMenu">
-                            <MenuItem Header="View-Update" Command="{Binding Path=DataContext.ViewUpdateClickedCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" Background="WhiteSmoke" />
-                            <MenuItem Header="Delete" Command="{Binding Path=DataContext.DeletePetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" Background="WhiteSmoke" />
+                            <MenuItem Header="{x:Static resx:StringResource.ViewUpdate}" Command="{Binding Path=DataContext.ViewUpdateClickedCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" Background="WhiteSmoke" />
+                            <MenuItem Header="{x:Static resx:StringResource.Delete}" Command="{Binding Path=DataContext.DeletePetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" Background="WhiteSmoke" />
                         </ContextMenu>
                     </ListView.Resources>
                     <ListView.ItemContainerStyle>
@@ -114,8 +115,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <uc:PetDetails DataContext="{Binding PetToDisplay}"  Pet="{Binding PetToDisplay, Mode=TwoWay}" Grid.ColumnSpan="3"/>
-            <Button Command="{Binding SaveButtonClickedCommand}" CommandParameter="{Binding PetToDisplay}" Content="Save" Grid.Row="1" Grid.Column="0" Width="50" />
-            <Button Command="{Binding CancelClickedCommand}" Content="Cancel" Grid.Row="1" Grid.Column="1" Width="50"/>
+            <Button Command="{Binding SaveButtonClickedCommand}" CommandParameter="{Binding PetToDisplay}" Content="{x:Static resx:StringResource.Save}" Grid.Row="1" Grid.Column="0" Width="50" />
+            <Button Command="{Binding CancelClickedCommand}" Content="{x:Static resx:StringResource.Cancel}" Grid.Row="1" Grid.Column="1" Width="50"/>
         </Grid>
     </DockPanel>
 </Window>
