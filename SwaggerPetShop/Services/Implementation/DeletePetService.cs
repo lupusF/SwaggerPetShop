@@ -10,20 +10,30 @@ using System.Threading.Tasks;
 
 namespace SwaggerPetShop.Services.Implementation
 {
-    public class DeletePetService :ServiceBase, IDeletePetService
+    public class DeletePetService : ServiceBase, IDeletePetService
     {
         public async Task<ReturnPetWithResponse> DeletePet(long id)
         {
             using (HttpClient client = new HttpClient())
             {
-                var url = ConfigurationManager.AppSettings["DeletePetUrl"];
-                client.DefaultRequestHeaders.Add("api-key", apiKey);
-                HttpResponseMessage response = client.DeleteAsync($"{url}{id}").Result;
-
-                return new ReturnPetWithResponse
+                try
                 {
-                    Message = response.ReasonPhrase
-                };
+                    var url = ConfigurationManager.AppSettings["DeletePetUrl"];
+                    client.DefaultRequestHeaders.Add("api-key", apiKey);
+                    HttpResponseMessage response = client.DeleteAsync($"{url}{id}").Result;
+
+                    return new ReturnPetWithResponse
+                    {
+                        Message = response.ReasonPhrase
+                    };
+                }
+                catch (Exception exception)
+                {
+                    return new ReturnPetWithResponse
+                    {
+                        Message = exception.Message
+                    };
+                }
             }
         }
     }

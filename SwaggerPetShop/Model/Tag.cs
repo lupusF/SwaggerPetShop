@@ -8,7 +8,7 @@ namespace SwaggerPetShop.Model
 {
     public class Tag
     {
-        public int id { get; set; }
+        public double id { get; set; }
         public string name { get; set; }
     }
 }

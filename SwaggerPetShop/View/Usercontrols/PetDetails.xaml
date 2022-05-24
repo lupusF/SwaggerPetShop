@@ -8,7 +8,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:resx="clr-namespace:SwaggerPetShop.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="825">
     <UserControl.Resources>
         <ObjectDataProvider x:Key="petStatus" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -21,6 +21,9 @@
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="15"/>
         </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="15"/>
+        </Style>
     </UserControl.Resources>
     <GroupBox Header="Pet details" Margin="5" VerticalAlignment="Center">
         <Grid>
@@ -31,28 +34,38 @@
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <TextBlock Text="{x:Static resx:StringResource.PetName}" Grid.Row="0" Grid.Column="0"/>
-            <TextBox Text="{Binding name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
+            <TextBox Text="{Binding name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
             <TextBlock Text="{x:Static resx:StringResource.PetId}" Grid.Row="1" Grid.Column="0"/>
-            <TextBox Text="{Binding id, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+            <TextBox Text="{Binding id, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"/>
             <TextBlock Text="{x:Static resx:StringResource.PetCategoryName}" Grid.Row="2" Grid.Column="0"/>
-            <TextBox Text="{Binding category.name, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
+            <TextBox Text="{Binding category.name, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"/>
             <TextBlock Text="{x:Static resx:StringResource.PetCategoryId}" Grid.Row="0" Grid.Column="2"/>
-            <TextBox Text="{Binding category.id, Mode=TwoWay}" Grid.Row="0" Grid.Column="3"/>
+            <TextBox Text="{Binding category.id, Mode=TwoWay}" Grid.Row="0" Grid.Column="3" VerticalContentAlignment="Center"/>
             <TextBlock Text="{x:Static resx:StringResource.TagName}" Grid.Row="1" Grid.Column="2"/>
-            <TextBox Text="{Binding tag.name, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>
+            <ListView ItemsSource="{Binding tags}"
+                      IsEnabled="False"
+                      Grid.Row="1"
+                      Grid.Column="3"
+                      Margin="15">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding name}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!--<TextBox Text="{Binding tags.name, Mode=TwoWay}" Grid.Row="1" Grid.Column="3"/>-->
             <TextBlock Text="{x:Static resx:StringResource.Status}" Grid.Row="2" Grid.Column="2"/>
             <TextBox Text="{Binding status, Mode=TwoWay}" Grid.Row="2" Grid.Column="3" />
             <!--<ComboBox 
                       Grid.Row="2" 
                       Grid.Column="3" 
-                      Width="140"  
                       ItemsSource="{Binding Source={StaticResource petStatus}}" 
-                      SelectedValue="{Binding status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                      SelectedValue="{Binding status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/-->
         </Grid>
     </GroupBox>
 </UserControl>

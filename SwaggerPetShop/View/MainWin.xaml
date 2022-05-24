@@ -23,11 +23,11 @@
         <Popup Name="PetNotFoundpopup" StaysOpen="False" IsOpen="{Binding IsPopUpOpen}"  Placement="Center">
             <TextBlock Text="{Binding PopupMessage}"
                     Background="AliceBlue"
-                    Height="60"
+                    Height="Auto"
                     Padding="5" Width="150"
                     TextWrapping="Wrap"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
         </Popup>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{x:Static resx:StringResource.Actions}">
@@ -117,7 +117,7 @@
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <uc:PetDetails DataContext="{Binding PetToDisplay}"  Pet="{Binding PetToDisplay, Mode=TwoWay}" Grid.ColumnSpan="3"/>
+            <uc:PetDetails DataContext="{Binding PetToDisplay}"  Pet="{Binding PetToDisplay}" Grid.ColumnSpan="3"/>
             <Button Command="{Binding SaveButtonClickedCommand}" CommandParameter="{Binding PetToDisplay}" Content="{x:Static resx:StringResource.Save}" Grid.Row="1" Grid.Column="0" Width="50" />
             <Button Command="{Binding CancelClickedCommand}" Content="{x:Static resx:StringResource.Cancel}" Grid.Row="1" Grid.Column="1" Width="50"/>
         </Grid>

@@ -22,12 +22,22 @@ namespace SwaggerPetShop.Services.Implementation
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("api_key", apiKey);
-                var result = client.PostAsync(url, content).Result;
-                return new ReturnPetWithResponse
+                try
                 {
-                    Message = result.ReasonPhrase
-                };
+                    client.DefaultRequestHeaders.Add("api_key", apiKey);
+                    var result = client.PostAsync(url, content).Result;
+                    return new ReturnPetWithResponse
+                    {
+                        Message = result.ReasonPhrase
+                    };
+                }
+                catch (Exception exception)
+                {
+                    return new ReturnPetWithResponse
+                    {
+                        Message = exception.Message
+                    };
+                }
             }
         }
 
@@ -60,6 +70,6 @@ namespace SwaggerPetShop.Services.Implementation
             };
         }
 
-       
+
     }
 }

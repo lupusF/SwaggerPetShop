@@ -18,17 +18,27 @@ namespace SwaggerPetShop.Services.Implementation
         {
             using (HttpClient client = new HttpClient())
             {
-                var url = ConfigurationManager.AppSettings["UpdatePetUrl"];
-                client.DefaultRequestHeaders.Add("api_key", apiKey);
-
-                var jsonBody = JsonConvert.SerializeObject(item);
-                HttpContent cont = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-
-                HttpResponseMessage response = client.PutAsync(url, cont).Result;
-                return new ReturnPetWithResponse
+                try
                 {
-                    Message = response.ReasonPhrase
-                };
+                    var url = ConfigurationManager.AppSettings["UpdatePetUrl"];
+                    client.DefaultRequestHeaders.Add("api_key", apiKey);
+
+                    var jsonBody = JsonConvert.SerializeObject(item);
+                    HttpContent cont = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = client.PutAsync(url, cont).Result;
+                    return new ReturnPetWithResponse
+                    {
+                        Message = response.ReasonPhrase
+                    };
+                }
+                catch (Exception exception)
+                {
+                    return new ReturnPetWithResponse
+                    {
+                        Message = exception.Message
+                    };
+                }
             }
         }
 

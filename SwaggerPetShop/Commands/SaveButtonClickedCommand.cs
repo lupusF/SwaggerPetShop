@@ -14,7 +14,7 @@ namespace SwaggerPetShop.Commands
     {
         public event EventHandler? CanExecuteChanged;
 
-        public MainViewModel _vm;
+        private MainViewModel _vm;
 
         public SaveButtonClickedCommand(MainViewModel vm)
         {

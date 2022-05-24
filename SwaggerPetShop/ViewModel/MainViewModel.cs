@@ -27,10 +27,19 @@ namespace SwaggerPetShop.ViewModel
         #region properties
         public ObservableCollection<Pet> PetList { get; set; }
 
-        public Pet? PetToDisplay { get; set; }
+        private Pet? _petToDisplay;
+        public Pet? PetToDisplay
+        {
+            get { return _petToDisplay; }
+            set 
+            {
+                _petToDisplay = value;
+                OnPropertyChanged("PetToDisplay");
+            }
+        }
         public string PetId { get; set; }
 
-        private Pet _selectedPet;
+        private Pet? _selectedPet;
         public Pet? SelectedPet
         {
             get { return _selectedPet; }
@@ -266,16 +275,19 @@ namespace SwaggerPetShop.ViewModel
 
         public void AddNewItemClicked()
         {
+            PetToDisplay = null;
+            SelectedPet = null;
             _isNew = true;
             PetDetailsVisibility = Visibility.Visible;
             PetToDisplay = SetDefaultValues();
             PetId = String.Empty;
-            OnPropertyChanged("PetToDisplay");
             OnPropertyChanged("PetId");
         }
 
         public void SearchClicked()
         {
+            PetToDisplay = null;
+            PetDetailsVisibility = Visibility.Hidden;
             PetList.Clear();
             if (SearchById)
             {
@@ -327,6 +339,7 @@ namespace SwaggerPetShop.ViewModel
                 {
                            new Tag()
                            {
+                               name = "tag",
                                 id = 1
                            }
                 },

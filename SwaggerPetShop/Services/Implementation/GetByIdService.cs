@@ -18,26 +18,36 @@ namespace SwaggerPetShop.Services.Implementation
         {
             using (HttpClient client = new HttpClient())
             {
-                var url = ConfigurationManager.AppSettings["GetByIdUrl"];
-                client.DefaultRequestHeaders.Add("api-key", apiKey);
-                HttpResponseMessage response = client.GetAsync($"{url}{id}").Result;
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var responsetring = await response.Content.ReadAsStringAsync();
-
-                    var pet =  JsonConvert.DeserializeObject<Pet>(responsetring);
-
-                    return new ReturnPetWithResponse
+                    var url = ConfigurationManager.AppSettings["GetByIdUrl"];
+                    client.DefaultRequestHeaders.Add("api-key", apiKey);
+                    HttpResponseMessage response = client.GetAsync($"{url}{id}").Result;
+                    if (response.IsSuccessStatusCode)
                     {
-                        Pet = pet,
-                        Message = response.ReasonPhrase,
-                    };
+                        var responsetring = await response.Content.ReadAsStringAsync();
+
+                        var pet = JsonConvert.DeserializeObject<Pet>(responsetring);
+
+                        return new ReturnPetWithResponse
+                        {
+                            Pet = pet,
+                            Message = response.ReasonPhrase,
+                        };
+                    }
+                    else
+                    {
+                        return new ReturnPetWithResponse
+                        {
+                            Message = response.ReasonPhrase,
+                        };
+                    }
                 }
-                else
+                catch (Exception exception)
                 {
                     return new ReturnPetWithResponse
                     {
-                        Message = response.ReasonPhrase,
+                        Message = exception.Message
                     };
                 }
             }

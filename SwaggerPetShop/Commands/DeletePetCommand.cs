@@ -11,7 +11,7 @@ namespace SwaggerPetShop.Commands
     public class DeletePetCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        public MainViewModel _mainViewModel;
+        private MainViewModel _mainViewModel;
 
         public DeletePetCommand(MainViewModel vm)
         {
